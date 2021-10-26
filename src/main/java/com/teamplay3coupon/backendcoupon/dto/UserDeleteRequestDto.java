@@ -4,6 +4,5 @@ import lombok.Data;
 
 @Data
 public class UserDeleteRequestDto {
-    long id;
+    private String password;
 }
-

@@ -8,6 +8,7 @@ import com.teamplay3coupon.backendcoupon.service.UserService;
 import com.teamplay3coupon.backendcoupon.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -19,6 +20,7 @@ public class UserController {
 
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
+    private final PasswordEncoder passwordEncoder;
 
     //회원가입
     @PostMapping("/api/user/signup")
@@ -55,21 +57,38 @@ public class UserController {
 
         return new ResponseDto("success","중복되지 않습니다");
     }
+
+
+
     //계정삭제
-//    private void checkLogin(UserDetailsImpl userDetails) {
-//        if(userDetails == null){
-//            throw new CustomErrorException("로그인 사용자만 이용가능합니다.");
-//        }
-//    }
-//    @DeleteMapping("/api/post")
-//    public ResponseDto deletePost(@RequestParam Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-//        checkLogin(userDetails);
-//        userService.deletePost(id, userDetails);
-//        return new ResponseDto("success","삭제완료");
-//    }
+    @DeleteMapping("/api/user/delete")
+    public ResponseDto deleteUser(
+            @RequestBody UserDeleteRequestDto requestDto,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        checkLogin(userDetails);
+        // 패스워드 암호화
+        if (!passwordEncoder.matches(requestDto.getPassword(), userDetails.getPassword())) {
+            throw new CustomErrorException("비밀번호가 맞지 않습니다.");
+        }
+        userService.delete(userDetails.getUser().getId());
+        return new ResponseDto("success", "계정이 삭제되었습니다");
+    }
+
+
+
+
 
 
     //게정수정
 
+
+
+
+    private void checkLogin(UserDetailsImpl userDetails) {
+        if(userDetails == null){
+            throw new CustomErrorException("로그인 사용자만 이용가능합니다.");
+        }
+    }
 
 }

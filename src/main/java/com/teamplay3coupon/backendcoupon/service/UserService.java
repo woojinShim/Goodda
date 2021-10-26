@@ -67,15 +67,11 @@ public class UserService {
                 ()->new CustomErrorException("로그인된 유저의 정보를 찾을 수 없습니다")
         );
     }
+    //계정삭제
+    public void delete(Long id) {
+        userRepository.deleteById(id);
+    }
 
-//    public void deletePost(Long id, User user){
-//        User user1 = userRepository.findById(id).orElseThrow(()->
-//                new CustomErrorException("해당 아이디의 포스트가 존재하지 않습니다"));
-//
-//        //계정에 저장되어있는 사용자의 username과 현재 사용자의 username 비교하기
-//        if(!user1.getUserEmail().equals(user.getUserEmail()))
-//            throw new CustomErrorException("회원님의 계정만 삭제 할 수 있습니다.");
-//
-//        userRepository.deleteById(id);
-//    }
+
+    //게정수정
 }
