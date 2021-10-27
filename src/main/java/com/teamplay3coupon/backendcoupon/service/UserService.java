@@ -85,7 +85,7 @@ public class UserService {
 
     //계정수정
     @Transactional
-    public ResponseDto modifyUser(String userEmail, String nickname, String password, String telecom, String cardType, String type1, String type2, String type3, User user) {
+    public ResponseDto modifyUser(String userEmail, String nickname, String telecom, String cardType, String type1, String type2, String type3) {
 
         // 유저 존재여부 확인
         User editUser = userRepository.findByUserEmail(userEmail).orElseThrow(
@@ -93,7 +93,7 @@ public class UserService {
 
         // 유저 update
 //        editUser.set(commentRequestDto.getComment());
-        editUser.updateUser(nickname, password, telecom, cardType, type1, type2, type3);
+        editUser.updateUser(nickname, telecom, cardType, type1, type2, type3);
 
         return new ResponseDto("success", "수정 완료");
     }

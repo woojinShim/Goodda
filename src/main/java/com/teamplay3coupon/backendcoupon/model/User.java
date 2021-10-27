@@ -49,9 +49,8 @@ public class User extends Timestamped {
     public User() {
 
     }
-    public void updateUser(String nickname, String password, String telecom, String cardType, String type1, String type2, String type3){
+    public void updateUser(String nickname, String telecom, String cardType, String type1, String type2, String type3){
         this.nickname = nickname;
-        this.password = password;
         this.telecom = telecom;
         this.cardType = cardType;
         this.type1 = type1;

@@ -84,7 +84,7 @@ public class UserController {
     }
 
     //계정수정
-    @PutMapping("/api/comment")
+    @PutMapping("/api/user/change")
     public ResponseDto modifyComment(
             @RequestBody UserUpdateRequestDto requestDto,
             @AuthenticationPrincipal @ApiIgnore UserDetailsImpl userDetails
@@ -94,18 +94,14 @@ public class UserController {
         if (!passwordEncoder.matches(requestDto.getPassword(), userDetails.getPassword())) {
             throw new CustomErrorException("비밀번호가 맞지 않습니다.");
         }
-        //패스워드 암호화
-        String encodedPassword= passwordEncoder.encode(requestDto.getPassword());
         return userService.modifyUser(
-                requestDto.getUserEmail(),
+                userDetails.getUsername(),
                 requestDto.getNickname(),
-                encodedPassword,
                 requestDto.getTelecom(),
                 requestDto.getCardType(),
                 requestDto.getType1(),
                 requestDto.getType2(),
-                requestDto.getType3(),
-                userDetails.getUser());
+                requestDto.getType3());
     }
 
 
