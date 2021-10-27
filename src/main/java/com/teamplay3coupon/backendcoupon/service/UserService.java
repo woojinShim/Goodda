@@ -8,10 +8,15 @@ import com.teamplay3coupon.backendcoupon.exception.CustomErrorException;
 import com.teamplay3coupon.backendcoupon.exception.UnauthenticatedException;
 import com.teamplay3coupon.backendcoupon.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Service
@@ -23,6 +28,11 @@ public class UserService {
     public ResponseDto signup(SignupRequestDto signupRequestDto) {
         String userEmail = signupRequestDto.getUserEmail();
         String nickname = signupRequestDto.getNickname();//실명
+        String telecom = signupRequestDto.getTelecom();
+        String cardType = signupRequestDto.getCardType();
+        String type1 = signupRequestDto.getType1();
+        String type2 = signupRequestDto.getType2();
+        String type3 = signupRequestDto.getType3();
         System.out.println("UserService:"+userEmail);
 
 //        회원 ID 중복 확인
@@ -30,7 +40,7 @@ public class UserService {
         //패스워드 암호화
         String encodedPassword= passwordEncoder.encode(signupRequestDto.getPassword());
 
-        User user = new User(userEmail,nickname,encodedPassword);
+        User user = new User(userEmail,nickname,encodedPassword, telecom, cardType, type1, type2, type3);
         System.out.println("UserService의 User:"+user.getUserEmail());
         User savedUser = userRepository.save(user);
         System.out.println(savedUser.getUserEmail());
@@ -54,6 +64,7 @@ public class UserService {
         }
         return user;
     }
+
     public User userFromUserDetails(UserDetails userDetails) {
         if ( userDetails instanceof UserDetailsImpl) {
             return ((UserDetailsImpl) userDetails).getUser();
@@ -72,6 +83,18 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    //계정수정
+    @Transactional
+    public ResponseDto modifyUser(String userEmail, String nickname, String password, String telecom, String cardType, String type1, String type2, String type3, User user) {
 
-    //게정수정
+        // 유저 존재여부 확인
+        User editUser = userRepository.findByUserEmail(userEmail).orElseThrow(
+                () -> new CustomErrorException("해당 유저를 찾을 수 없어 수정할 수 없습니다."));
+
+        // 유저 update
+//        editUser.set(commentRequestDto.getComment());
+        editUser.updateUser(nickname, password, telecom, cardType, type1, type2, type3);
+
+        return new ResponseDto("success", "수정 완료");
+    }
 }

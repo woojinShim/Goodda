@@ -10,9 +10,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,8 +38,14 @@ public class UserController {
         String checkedUserEmail = user.getUserEmail();
         String token = jwtTokenProvider.createToken(checkedUserEmail);
         String checkedNickname = user.getNickname();
+        String checkedTelecom = user.getTelecom();
+        String checkedCardType = user.getCardType();
+        String checkedType1 = user.getType1();
+        String checkedType2 = user.getType2();
+        String checkedType3 = user.getType3();
 
-        UserResponseDataDto dataDto = new UserResponseDataDto(token,checkedUserEmail,checkedNickname);
+
+        UserResponseDataDto dataDto = new UserResponseDataDto(token,checkedUserEmail,checkedNickname, checkedTelecom, checkedCardType, checkedType1, checkedType2, checkedType3);
 
         response.setHeader("X-AUTH-TOKEN", token);
         Cookie cookie = new Cookie("X-AUTH-TOKEN", token);
@@ -67,7 +75,7 @@ public class UserController {
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         checkLogin(userDetails);
-        // 패스워드 암호화
+        // 패스워드 체크
         if (!passwordEncoder.matches(requestDto.getPassword(), userDetails.getPassword())) {
             throw new CustomErrorException("비밀번호가 맞지 않습니다.");
         }
@@ -75,12 +83,30 @@ public class UserController {
         return new ResponseDto("success", "계정이 삭제되었습니다");
     }
 
-
-
-
-
-
-    //게정수정
+    //계정수정
+    @PutMapping("/api/comment")
+    public ResponseDto modifyComment(
+            @RequestBody UserUpdateRequestDto requestDto,
+            @AuthenticationPrincipal @ApiIgnore UserDetailsImpl userDetails
+    ) {
+        checkLogin(userDetails);
+        // 패스워드 체크
+        if (!passwordEncoder.matches(requestDto.getPassword(), userDetails.getPassword())) {
+            throw new CustomErrorException("비밀번호가 맞지 않습니다.");
+        }
+        //패스워드 암호화
+        String encodedPassword= passwordEncoder.encode(requestDto.getPassword());
+        return userService.modifyUser(
+                requestDto.getUserEmail(),
+                requestDto.getNickname(),
+                encodedPassword,
+                requestDto.getTelecom(),
+                requestDto.getCardType(),
+                requestDto.getType1(),
+                requestDto.getType2(),
+                requestDto.getType3(),
+                userDetails.getUser());
+    }
 
 
 

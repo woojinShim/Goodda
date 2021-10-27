@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class SignupRequestDto {
+public class UserUpdateRequestDto {
     private String userEmail;
     private String nickname;
     private String password;
@@ -17,5 +17,4 @@ public class SignupRequestDto {
     private String type1;
     private String type2;
     private String type3;
-
 }

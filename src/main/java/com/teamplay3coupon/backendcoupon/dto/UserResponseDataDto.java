@@ -9,4 +9,11 @@ public class UserResponseDataDto {
     String token;
     String userEmail;
     String nickname;
+    String telecom;
+    String cardType;
+    String type1;
+    String type2;
+    String type3;
+
+
 }
