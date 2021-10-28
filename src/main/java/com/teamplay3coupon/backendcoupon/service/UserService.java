@@ -1,5 +1,6 @@
 package com.teamplay3coupon.backendcoupon.service;
 
+import com.teamplay3coupon.backendcoupon.dto.UserUpdateResponseDto;
 import com.teamplay3coupon.backendcoupon.model.User;
 import com.teamplay3coupon.backendcoupon.repository.UserRepository;
 import com.teamplay3coupon.backendcoupon.dto.ResponseDto;
@@ -95,6 +96,15 @@ public class UserService {
 //        editUser.set(commentRequestDto.getComment());
         editUser.updateUser(nickname, telecom, cardType, type1, type2, type3);
 
-        return new ResponseDto("success", "수정 완료");
+        UserUpdateResponseDto userUpdateResponseDto = new UserUpdateResponseDto(
+                editUser.getNickname(),
+                editUser.getTelecom(),
+                editUser.getCardType(),
+                editUser.getType1(),
+                editUser.getType2(),
+                editUser.getType3()
+                );
+
+        return new ResponseDto("success", userUpdateResponseDto);
     }
 }

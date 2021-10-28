@@ -3,6 +3,7 @@ package com.teamplay3coupon.backendcoupon.controller;
 import com.teamplay3coupon.backendcoupon.dto.*;
 import com.teamplay3coupon.backendcoupon.exception.CustomErrorException;
 import com.teamplay3coupon.backendcoupon.model.User;
+import com.teamplay3coupon.backendcoupon.repository.UserRepository;
 import com.teamplay3coupon.backendcoupon.security.UserDetailsImpl;
 import com.teamplay3coupon.backendcoupon.service.UserService;
 import com.teamplay3coupon.backendcoupon.jwt.JwtTokenProvider;
@@ -23,6 +24,7 @@ public class UserController {
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
     //회원가입
     @PostMapping("/api/user/signup")
@@ -85,7 +87,7 @@ public class UserController {
 
     //계정수정
     @PutMapping("/api/user/change")
-    public ResponseDto modifyComment(
+    public ResponseDto changeUser(
             @RequestBody UserUpdateRequestDto requestDto,
             @AuthenticationPrincipal @ApiIgnore UserDetailsImpl userDetails
     ) {
@@ -103,14 +105,34 @@ public class UserController {
                 requestDto.getType2(),
                 requestDto.getType3());
     }
-
-
-
-
+//로그인 체크
     private void checkLogin(UserDetailsImpl userDetails) {
         if(userDetails == null){
             throw new CustomErrorException("로그인 사용자만 이용가능합니다.");
         }
     }
+
+    //유저정보 보여주기
+    @GetMapping("/api/user/show")
+    public ResponseDto showUser( @AuthenticationPrincipal @ApiIgnore UserDetailsImpl userDetails)
+    {
+        checkLogin(userDetails);
+
+       String userEmail =  userDetails.getUsername();
+        // 유저 존재여부 확인
+        User showUser = userRepository.findByUserEmail(userEmail).orElseThrow(
+                () -> new CustomErrorException("해당 유저를 찾을 수 없습니다."));
+
+        UserShowResponseDto userShowResponseDto = new UserShowResponseDto(
+                showUser.getNickname(),
+                showUser.getTelecom(),
+                showUser.getCardType(),
+                showUser.getType1(),
+                showUser.getType2(),
+                showUser.getType3()
+        );
+        return new ResponseDto("success",userShowResponseDto);
+    }
+
 
 }
