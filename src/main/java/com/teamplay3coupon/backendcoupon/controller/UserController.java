@@ -71,7 +71,7 @@ public class UserController {
 
 
     //계정삭제
-    @DeleteMapping("/api/user/delete")
+    @PostMapping("/api/user/delete")
     public ResponseDto deleteUser(
             @RequestBody UserDeleteRequestDto requestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails
