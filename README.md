@@ -19,8 +19,12 @@
       <br> 통신사 할인을 사용하려면 통신사 어플을, 카드사 할인을 보고싶을땐 카드사 홈페이지를 방문해야 하는 불편함이 있었습니다.
       <br> 그렇게 우리는 신선한 물음표에대한 답을 얻기 위해 <strong><a href= "http://goodda.co.kr/">GOODDA</a></strong>를 기획하게 되었습니다.</p> 
 
-    <br><br>
-    <p><strong> GOODDA.FRONTEND </strong></p>
+
+
+   
+
+
+GOODA.FRONTEND </strong></p>
      🌱 <a href = "https://github.com/jaake97">정혜원(프로젝트 팀장)</a>
     <br> 🌱 <a href = "mingab91.github.com ">조민갑</a>
     <br> 🌱 <a href = "https://github.com/parksangsoo">박상수</a>
@@ -32,12 +36,8 @@
     <strong>Backend</strong>
      <ul>
       <li>Java 8, SpringBoot 2.5.2, Spring Security, Gradle 7.0.2, JPA, MySQL 8.0
-</li>
-     </ul>
 
-    <h1>5.프로젝트 설계</h1>
-    <strong><a href = "https://www.notion.so/API-Design-2118b599a6e646ed9aba62158283065a">API 설계</a></strong>
-    <br> <strong><a href = "https://user-images.githubusercontent.com/90609214/144567537-b1537ae6-6cdd-43c0-a29f-2f7a12cc3432.png">ERD</a></strong>
-    <br> <strong><a href = "https://user-images.githubusercontent.com/90609214/144568667-2a0749ca-d04c-4606-8aa2-9dcb98e77eb3.png">주요기능 아키텍처</a></strong>
+
+
   </body>
 </html>
